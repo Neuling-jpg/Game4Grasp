@@ -41,7 +41,6 @@ int GraspSolver(RobotConfigOptimizer* robot_solver_ptr,
 		}
 
 		run_player2(object_solver_ptr, theta, use_cdist, _verbose);
-		// run_player2(object_solver_ptr, theta, use_cdist, false);
 		
 		robot_solver_ptr -> _object_rotation_euler_escape = object_solver_ptr -> _object_rotation_euler_escape;
 		robot_solver_ptr -> _object_translation_escape = object_solver_ptr -> _object_translation_escape;

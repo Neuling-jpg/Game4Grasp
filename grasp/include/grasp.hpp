@@ -7,9 +7,6 @@
 
 namespace grasp{
 
-// #define DEBUG_ROBOT_ARM 1
-
-
 /**
  * @brief An interface class for robot arms.
  */

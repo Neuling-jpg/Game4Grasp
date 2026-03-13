@@ -60,7 +60,8 @@ def launch_grasp(robot_name, object_name, object_pc, batchid,
         cprint(ret.stdout.strip(), 'blue')
         cprint(ret.stderr.strip(), 'red')
         exit()
-    
+
+    # TODO: Direct pybinder still has bugs, so we use subprocess to call the executable.
     # start_time = time.time()
     # with contextlib.redirect_stderr(io.StringIO()):
     #     ret = graspopt.grasp(
@@ -70,15 +71,6 @@ def launch_grasp(robot_name, object_name, object_pc, batchid,
     #                         verbose=0
     #                     )
     # end_time = time.time()
-
-    # try:
-    #     predict_q = np.loadtxt(os.path.join(log_dir, 'predict_q.txt'))
-    #     robot_pts_ini = np.loadtxt(os.path.join(log_dir, 'robot_pts_ini.txt'))
-    #     robot_pts_opt = np.loadtxt(os.path.join(log_dir, 'robot_pts_opt.txt'))
-    #     robot_base_mat = np.loadtxt(os.path.join(log_dir, 'robot_base_mat.txt'))
-    # except FileNotFoundError as e:
-    #     cprint("graspopt.grasp() throw an error.", 'red')
-    #     exit()
     
     newT = robot_base_mat.copy()
     if adjustT:
@@ -99,11 +91,3 @@ def launch_grasp(robot_name, object_name, object_pc, batchid,
             torch.tensor(newT, dtype=torch.float32), \
             end_time - start_time, \
             log_dir
-
-if __name__ == "__main__":
-    # test launch_graspopt
-    robot_name = 'shadowhand'
-    object_name = 'dummy_object'
-    object_pc = 0.05 * torch.rand(500, 3)  # Dummy point cloud
-    predict_q = launch_grasp(robot_name, object_name, object_pc, 0)
-    print(f"Predicted joint values for {robot_name} grasping {object_name}: {predict_q.shape}")

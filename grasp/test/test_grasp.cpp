@@ -96,13 +96,12 @@ int Grasp(
   // Enable Eigen's built-in parallelization
   Eigen::initParallel();  // Initialize parallelization
   Eigen::setNbThreads(4); // Set to number of CPU cores
+  // TODO: ^ this is not functioning as expected
   
   grasp::GraspOpt hand(robot_name, verbose);
 
   std::vector<std::string> link_names = hand.GetLinkNames();
 
-  // // rebuild theta_ini to match the expected size
-  // std::vector<double> theta_ini;
   hand.UpdateBaseEuler6D(base_euler);
 
   /////////////////////////////////////////////
