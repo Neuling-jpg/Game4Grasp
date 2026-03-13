@@ -127,6 +127,7 @@ Game4Grasp
 │   ├── pybind/  # Python bindings for the C++ library
 │   │   └── grasp_bind.cpp
 │   └── CMakeLists.txt
+├── grasp_pywrapper/  # Python interface of game4grasp c++ code
 ├── data/  # Downloaded datasets (raw and processed) @ D(R, O)
 ├── validation/  # Validation scripts (e.g., for Isaac Gym) @ D(R, O)
 └── validate.py  # Entry point for running validation
