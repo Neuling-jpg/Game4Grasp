@@ -29,7 +29,9 @@ Open source code repository for **Adversarial Game-Theoretic Algorithm for Dexte
 <div align="center">
   <img src="pipeline.png" alt="main" width="95%">
 </div>
+<p>
 Overview of the proposed grasp synthesis approach. a) Our method relies on a firm grasp condition that once satisfied, any non-zero object transformation will result in object-robot penetration. b) The problem is formulated as a two-player game. Player~1 seeks to satisfy the firm grasp condition, while Player~2 attempts to break it. The two players compete specifically on this condition, whereas all other constraints are isolated within their respective optimization problems. c) We model the hand by attaching spatial points to base and joint frames: joints are represented as spheres at joint centers, and links as ellipsoids with foci at their endpoints. d) The object is modeled as a set of points directly sampled from its point cloud. Penetration occurs if any of these points fall within the robot’s collision volume. e) For algorithm initialization, we align the palm frame $\mathcal{F}_R^\text{palm}$ and the object frame $\mathcal{F}_O$.
+</p>
 
 
 ## Compile and Run Game4Grasp
@@ -95,6 +97,7 @@ Game4Grasp
 │   │   │   ├── robot_model_sheets/
 │   │   │   │   ├── allegro.hpp
 │   │   │   │   ├── barret.hpp
+│   │   │   │   ├── leaphand.hpp
 │   │   │   │   └── shadowhand.hpp
 │   │   │   ├── kinematics_model.hpp
 │   │   │   └── robot_registry.hpp
