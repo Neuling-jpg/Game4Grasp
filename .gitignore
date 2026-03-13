@@ -1,0 +1,26 @@
+# build files
+*/build
+
+# log files
+*.log
+*/logs
+example_logs/
+
+# VS Code
+.vscode/
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# temp files
+tmp/
+*.tmp
+
+# data
+data/*
+
+# git
+.git
