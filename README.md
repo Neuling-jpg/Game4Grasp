@@ -12,7 +12,7 @@ Open source code repository for **Adversarial Game-Theoretic Algorithm for Dexte
 [Guanya Shi](https://www.gshi.me/)<sup>1</sup>,
 [Howie Choset](https://en.wikipedia.org/wiki/Howie_Choset)<sup>1</sup>,
 [Jiayuan Mao](https://jiayuanm.com/)<sup>3</sup>,
-[Jeffrey Ichnowski](https://ichnow.ski/)<sup>3</sup>.
+[Jeffrey Ichnowski](https://ichnow.ski/)<sup>1</sup>.
 
 
 <sup>1</sup>Carnegie Mellon University, <sup>2</sup>University of Maryland, <sup>3</sup>University of Pennsylvania.
