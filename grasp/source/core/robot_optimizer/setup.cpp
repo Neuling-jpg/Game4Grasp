@@ -69,17 +69,16 @@ int RobotConfigOptimizer::InitGradValue() {
 
 	for (int i = 0; i < 6; ++i) _grad_base_euler[i] = 0;
 
+	_dLgrgn_dbase = MatInit(4,4,0);
 	for (int i = 0; i < _num_joints; ++i){
-		
 		for (int j = 0; j < _sub_joint_counter[i]; ++j){
-			_dLgrgn_dbase = MatInit(4,4,0);
 			_dLgrgn_dpose[i][j] = MatInit(4,4,0);
 			_dLgrgn_dDH[i][j] = MatInit(4,4,0);
 			_dDH_dctheta[i][j] = MatInit(4,4,0);
+			_ddist_dw[i][j] = 0;
 			_dobj_dw[i][j] = 0;
-
+			_dLgrgn_ddist[i][j] = 0;
 		}
-	
 	}
 
 	return 1;
