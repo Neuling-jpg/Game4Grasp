@@ -240,7 +240,7 @@ int RobotConfigOptimizer::ComputeJacob() {
 
 int RobotConfigOptimizer::GradPropagate(const int& i, const int& j, const int& i_prv, const int& j_prv) {
 	if (i_prv == -1) {
-		_dLgrgn_dbase = _dLgrgn_dpose[i][j] * MatTranspose(_sub_DH[i][j]);
+		_dLgrgn_dbase += _dLgrgn_dpose[i][j] * MatTranspose(_sub_DH[i][j]);
 		if (_SR[i][j] == 0) return 1;
 		// _dLgrgn_dDH[i][j] = MatEye(4) * _dLgrgn_dpose[i][j];
 		_dLgrgn_dDH[i][j] = MatTranspose(_base) * _dLgrgn_dpose[i][j];

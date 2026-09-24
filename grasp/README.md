@@ -37,7 +37,7 @@ make -j$(nproc)
 
 ```bash
 # still inside grasp/build
-./test_grasp
+./test_grasp --robot_name shadowhand --object_name contactdb+rubber_duck --log_dir ../../example_logs/shadowhand/contactdb+alarm_clock/0
 ```
 
 ## 3. CMake hints (if dependencies aren’t found)
