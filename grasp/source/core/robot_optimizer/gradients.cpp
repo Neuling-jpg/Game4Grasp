@@ -6,6 +6,8 @@
 namespace grasp{
 
 int RobotConfigOptimizer::ComputeJacob() {
+	
+	InitGradValue();
 
 	int i, start_id = 0;
 
@@ -13,10 +15,11 @@ int RobotConfigOptimizer::ComputeJacob() {
 	// derivatives w.r.t. self-collision
 	///////////////////////////////////////
 
-	_self_cdist_mat.array() += EPSILON;
-	_dpenalty_deex = -_self_cdist_dx.cwiseQuotient(_self_cdist_mat);
-	_dpenalty_deey = -_self_cdist_dy.cwiseQuotient(_self_cdist_mat);
-	_dpenalty_deez = -_self_cdist_dz.cwiseQuotient(_self_cdist_mat);
+	Eigen::MatrixXd _self_cdist_mat_safe = _self_cdist_mat;  // deep copy
+	_self_cdist_mat_safe.array() += EPSILON;
+	_dpenalty_deex = -_self_cdist_dx.cwiseQuotient(_self_cdist_mat_safe);
+	_dpenalty_deey = -_self_cdist_dy.cwiseQuotient(_self_cdist_mat_safe);
+	_dpenalty_deez = -_self_cdist_dz.cwiseQuotient(_self_cdist_mat_safe);
 
 	// resize to fit the dimension of mu
 	_self_cdist_mat_err_greater_than_zero = (_self_cdist_mat_err.array() > 0.0).cast<double>();
@@ -55,10 +58,11 @@ int RobotConfigOptimizer::ComputeJacob() {
 	// derivatives w.r.t. joint-object collision
 	///////////////////////////////////////
 
-	_colli_cdist_mat.array() += EPSILON;
-	_dpenalty_deex = -_colli_cdist_dx.cwiseQuotient(_colli_cdist_mat);
-	_dpenalty_deey = -_colli_cdist_dy.cwiseQuotient(_colli_cdist_mat);
-	_dpenalty_deez = -_colli_cdist_dz.cwiseQuotient(_colli_cdist_mat);
+	Eigen::MatrixXd _colli_cdist_mat_safe = _colli_cdist_mat;
+	_colli_cdist_mat_safe.array() += EPSILON;
+	_dpenalty_deex = -_colli_cdist_dx.cwiseQuotient(_colli_cdist_mat_safe);
+	_dpenalty_deey = -_colli_cdist_dy.cwiseQuotient(_colli_cdist_mat_safe);
+	_dpenalty_deez = -_colli_cdist_dz.cwiseQuotient(_colli_cdist_mat_safe);
 
 	// resize to fit the dimension of mu
 	_colli_cdist_mat_err_greater_than_zero = (_colli_cdist_mat_err.array() > 0.0).cast<double>();
@@ -97,13 +101,16 @@ int RobotConfigOptimizer::ComputeJacob() {
 	// derivatives w.r.t. link-object collision
 	///////////////////////////////////////
 
-	_colli_link_cdist_mat0.array() += EPSILON; _colli_link_cdist_mat1.array() += EPSILON;
-	_dpenalty_deex0 = -_colli_link_cdist_dx0.cwiseQuotient(_colli_link_cdist_mat0);
-	_dpenalty_deey0 = -_colli_link_cdist_dy0.cwiseQuotient(_colli_link_cdist_mat0);
-	_dpenalty_deez0 = -_colli_link_cdist_dz0.cwiseQuotient(_colli_link_cdist_mat0);
-	_dpenalty_deex1 = -_colli_link_cdist_dx1.cwiseQuotient(_colli_link_cdist_mat1);
-	_dpenalty_deey1 = -_colli_link_cdist_dy1.cwiseQuotient(_colli_link_cdist_mat1);
-	_dpenalty_deez1 = -_colli_link_cdist_dz1.cwiseQuotient(_colli_link_cdist_mat1);
+	Eigen::MatrixXd _colli_link_cdist_mat0_safe = _colli_link_cdist_mat0;
+	_colli_link_cdist_mat0_safe.array() += EPSILON;
+	Eigen::MatrixXd _colli_link_cdist_mat1_safe = _colli_link_cdist_mat1;
+	_colli_link_cdist_mat1_safe.array() += EPSILON;
+	_dpenalty_deex0 = -_colli_link_cdist_dx0.cwiseQuotient(_colli_link_cdist_mat0_safe);
+	_dpenalty_deey0 = -_colli_link_cdist_dy0.cwiseQuotient(_colli_link_cdist_mat0_safe);
+	_dpenalty_deez0 = -_colli_link_cdist_dz0.cwiseQuotient(_colli_link_cdist_mat0_safe);
+	_dpenalty_deex1 = -_colli_link_cdist_dx1.cwiseQuotient(_colli_link_cdist_mat1_safe);
+	_dpenalty_deey1 = -_colli_link_cdist_dy1.cwiseQuotient(_colli_link_cdist_mat1_safe);
+	_dpenalty_deez1 = -_colli_link_cdist_dz1.cwiseQuotient(_colli_link_cdist_mat1_safe);
 
 	// resize to fit the dimension of mu
 	_colli_link_cdist_mat_err_greater_than_zero = (_colli_link_cdist_mat_err.array() > 0.0).cast<double>();
@@ -170,14 +177,17 @@ int RobotConfigOptimizer::ComputeJacob() {
 
 	if (_form_closure_penalty > 0.0) {
 		
-		_cdist_mat_escape.array() += EPSILON; _must_touch_cdist_mat.array() += EPSILON;
-		_dpenalty_deex = _cdist_dx_escape.cwiseQuotient(_cdist_mat_escape);
-		_dpenalty_deey = _cdist_dy_escape.cwiseQuotient(_cdist_mat_escape);
-		_dpenalty_deez = _cdist_dz_escape.cwiseQuotient(_cdist_mat_escape);
+		Eigen::MatrixXd _cdist_mat_escape_safe = _cdist_mat_escape;
+		_cdist_mat_escape_safe.array() += EPSILON; 
+		Eigen::MatrixXd _must_touch_cdist_mat_safe = _must_touch_cdist_mat;
+		_must_touch_cdist_mat_safe.array() += EPSILON;
+		_dpenalty_deex = _cdist_dx_escape.cwiseQuotient(_cdist_mat_escape_safe);
+		_dpenalty_deey = _cdist_dy_escape.cwiseQuotient(_cdist_mat_escape_safe);
+		_dpenalty_deez = _cdist_dz_escape.cwiseQuotient(_cdist_mat_escape_safe);
 		// _mtcstt is short for _must_touch_cdist_smaller_than_threshold
-		_dpenalty_deex -= _mtcstt.cwiseProduct(_must_touch_cdist_dx).cwiseQuotient(_must_touch_cdist_mat);
-		_dpenalty_deey -= _mtcstt.cwiseProduct(_must_touch_cdist_dy).cwiseQuotient(_must_touch_cdist_mat);
-		_dpenalty_deez -= _mtcstt.cwiseProduct(_must_touch_cdist_dz).cwiseQuotient(_must_touch_cdist_mat);
+		_dpenalty_deex -= _mtcstt.cwiseProduct(_must_touch_cdist_dx).cwiseQuotient(_must_touch_cdist_mat_safe);
+		_dpenalty_deey -= _mtcstt.cwiseProduct(_must_touch_cdist_dy).cwiseQuotient(_must_touch_cdist_mat_safe);
+		_dpenalty_deez -= _mtcstt.cwiseProduct(_must_touch_cdist_dz).cwiseQuotient(_must_touch_cdist_mat_safe);
 
 		_dpenalty_deex = _dpenalty_deex.cwiseProduct(_coesdgtz);
 		_dpenalty_deey = _dpenalty_deey.cwiseProduct(_coesdgtz);

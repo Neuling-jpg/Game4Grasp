@@ -53,10 +53,16 @@ int GraspSolver(RobotConfigOptimizer* robot_solver_ptr,
 		
 		if (std::sqrt(object_solver_ptr -> _euler_norm_square) < 1e-3
 			&&
-			robot_solver_ptr -> _form_closure_penalty < 1e-3)
+			robot_solver_ptr -> _form_closure_penalty < 1e-3) {
+			run_player1(robot_solver_ptr, theta, use_cdist, _verbose);
+			converged = 1;
 			break;
-		if (std::abs(std::sqrt(object_solver_ptr -> _euler_norm_square) - last_escape_norm) < 1e-5) 
+		}
+		else if (std::abs(std::sqrt(object_solver_ptr -> _euler_norm_square) - last_escape_norm) < 1e-5) {
+			run_player1(robot_solver_ptr, theta, use_cdist, _verbose);
+			converged = 1;
 			break;
+		} 
 		else 
 			last_escape_norm = std::sqrt(object_solver_ptr -> _euler_norm_square);
 	}

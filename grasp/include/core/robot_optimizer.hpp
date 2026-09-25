@@ -50,6 +50,7 @@ public:
 	std::vector<std::vector<double> > _base;
 	std::vector<double> _base_frame_decision_var, _euler_norm, _euler;
 	bool fix_base_translation = false;  // whether to fix the base translation during optimization
+	double ROLL_MAX, ROLL_MIN, YAW_MAX, YAW_MIN, PITCH_MAX, PITCH_MIN;
 	
 };
 
@@ -108,7 +109,6 @@ public:
 	int num_total_sub_joints;  // num of all the sub-joints together
 
 // protected:
-	double ROLL_MAX, ROLL_MIN, YAW_MAX, YAW_MIN, PITCH_MAX, PITCH_MIN;
 	std::vector<double> _base_frame_decision_var, _euler_norm, _euler;
 
 	std::vector< std::vector<std::vector<double> > > _m0s;

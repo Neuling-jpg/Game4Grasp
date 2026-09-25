@@ -362,12 +362,20 @@ void GraspOpt::AdjustBase(RobotConfigOptimizer* robot_solver_ptr,
 	// reset limits of roll, yaw, pitch
 	if (base_ini.empty()) {
 		if (_robot_name == "allegro") {
+			// update robot solver
 			_robot_solver->ROLL_MAX = new_base_euler(0) + M_PI/12;
 			_robot_solver->ROLL_MIN = new_base_euler(0) - M_PI/12;
 			_robot_solver->YAW_MAX = new_base_euler(1) + M_PI/12;
 			_robot_solver->YAW_MIN = new_base_euler(1) - M_PI/12;
 			_robot_solver->PITCH_MAX = new_base_euler(2) + M_PI/12;
 			_robot_solver->PITCH_MIN = new_base_euler(2) - M_PI/12;
+			// update fk_ptr
+			_fk_ptr->ROLL_MAX = _robot_solver->ROLL_MAX;
+			_fk_ptr->ROLL_MIN = _robot_solver->ROLL_MIN;
+			_fk_ptr->YAW_MAX = _robot_solver->YAW_MAX;
+			_fk_ptr->YAW_MIN = _robot_solver->YAW_MIN;
+			_fk_ptr->PITCH_MAX = _robot_solver->PITCH_MAX;
+			_fk_ptr->PITCH_MIN = _robot_solver->PITCH_MIN;
 		}
 		if (_robot_name == "leaphand") {
 			_robot_solver->ROLL_MAX = new_base_euler(0) + M_PI/2;
@@ -376,6 +384,13 @@ void GraspOpt::AdjustBase(RobotConfigOptimizer* robot_solver_ptr,
 			_robot_solver->YAW_MIN = new_base_euler(1) - M_PI/2;
 			_robot_solver->PITCH_MAX = new_base_euler(2) + M_PI/2;
 			_robot_solver->PITCH_MIN = new_base_euler(2) - M_PI/2;
+			// update fk_ptr
+			_fk_ptr->ROLL_MAX = _robot_solver->ROLL_MAX;
+			_fk_ptr->ROLL_MIN = _robot_solver->ROLL_MIN;
+			_fk_ptr->YAW_MAX = _robot_solver->YAW_MAX;
+			_fk_ptr->YAW_MIN = _robot_solver->YAW_MIN;
+			_fk_ptr->PITCH_MAX = _robot_solver->PITCH_MAX;
+			_fk_ptr->PITCH_MIN = _robot_solver->PITCH_MIN;
 		}
 	} 
 	else {
@@ -387,7 +402,14 @@ void GraspOpt::AdjustBase(RobotConfigOptimizer* robot_solver_ptr,
 		_robot_solver->PITCH_MAX = new_base_euler(2) + M_PI/24;
 		_robot_solver->PITCH_MIN = new_base_euler(2) - M_PI/24;
 		// fix the base translation
-		_robot_solver->fix_base_translation = true;
+		// _robot_solver->fix_base_translation = true;
+		// update fk_ptr
+		_fk_ptr->ROLL_MAX = _robot_solver->ROLL_MAX;
+		_fk_ptr->ROLL_MIN = _robot_solver->ROLL_MIN;
+		_fk_ptr->YAW_MAX = _robot_solver->YAW_MAX;
+		_fk_ptr->YAW_MIN = _robot_solver->YAW_MIN;
+		_fk_ptr->PITCH_MAX = _robot_solver->PITCH_MAX;
+		_fk_ptr->PITCH_MIN = _robot_solver->PITCH_MIN;
 	}
 	
 	UpdateBaseEuler6D(grasp::Eigen2Vec(new_base_euler));
@@ -413,6 +435,7 @@ void GraspOpt::ComputeGrasp(std::vector<double>& theta_solution,
 	adjusted_initial_active_ee = grasp::Eigen2Vec2d(_robot_solver->_active_ee_position);
 	adjusted_initial_pts_with_parent.resize(_robot_solver->_link_poses.size());
 	for (int i = 0; i < adjusted_initial_pts_with_parent.size(); ++i) {
+		adjusted_initial_pts_with_parent[i] = {};
 		for (int j = 0; j < 3; ++j) 
 			adjusted_initial_pts_with_parent[i].emplace_back(
 				_robot_solver->_link_poses[i][j][3]
